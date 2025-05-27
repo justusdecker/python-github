@@ -13,7 +13,35 @@ description
 
 
 """
-
+def cret(text: str, color: tuple[int,int,int]) -> None:
+    color = hex_to_rgb(color)
+    return f"\033[38;2;{color[0]};{color[1]};{color[2]}m{text}\033[39m"
+def hex_to_rgb(text: str) -> tuple[int,int,int]:
+    return int(text[1:3],16),int(text[3:5],16),int(text[5:7],16)
+def get_repository(user:str,repo:str):
+    html = rqget(f"https://github.com/{user}/{repo}")
+    bs = BeautifulSoup(html.content,'html.parser')
+    ustar = bs.find(id = "repo-stars-counter-unstar")
+    star = bs.find(id = "repo-stars-counter-star")
+    """
+    get all langs
+    get all lang colors
+    get lang percentage
+    commit count
+    tags
+    license
+    forks
+    name
+    description
+    last commit id
+    last commit text
+    """
+    if star:
+        stars = star.text
+    else:
+        stars = ustar.text
+    print(stars)
+    
 def get_user_repositorys(user: str):
     html = rqget(f"https://github.com/{user}?tab=repositories")
     
@@ -27,23 +55,28 @@ def get_user_repositorys(user: str):
         
         name = bs_2[i].find(attrs={"itemprop":"name codeRepository"})# text
         
-        
-        
-        description = bs_2[i].find(attrs={"class":"color-fg-muted"})# text
+        description = bs_2[i].find(attrs={"itemprop":"description"})# text
         
         repo_lang_color = bs_2[i].find(attrs={"class":"repo-language-color"})# .attrs['style'].split(' ')[1]
         
         lang = bs_2[i].find(attrs={"itemprop":"programmingLanguage"})# text
         name = name.text.lstrip() if name else "undefined"
-        description = description.text.lstrip() if description else "undefined"
-        repo_lang_color = repo_lang_color.attrs['style'].split(' ')[1].lstrip() if repo_lang_color else "undefined"
+        description = description.text.strip() if description else "undefined"
+        repo_lang_color = repo_lang_color.attrs['style'].split(' ')[1].lstrip() if repo_lang_color else "#000000"
         lang = lang.text.lstrip() if lang else "undefined"
-    #lic = bs_2[i].find_all(attrs={"class":"mr-3"})[1].text
-        print(f"{name} in {lang} {repo_lang_color}\n{description}\n", "*" * 25, '\n')
-        #print(namerepo_lang_color,lang,name,description)
-
+        
+        # get the license, stars, forks & last updated from repo site
+        current = {
+            'name': name,
+            'lang': lang,
+            'repo_lang_color': repo_lang_color,
+            'description': description
+        }
+        ret.append(current)
+    return ret
 from requests import get as rqget
 from bs4 import BeautifulSoup
 
-get_user_repositorys('justusdecker')
+#print(get_user_repositorys('justusdecker'))
 
+get_repository("justusdecker",'pygame-engine')
