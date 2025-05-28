@@ -13,8 +13,9 @@
 ## Formats
 ```
 {
-  "firstName": "John",
-  "lastName": "Smith",
-  "age": 25
+  "name": "python-github",
+  "lang": "Python",
+  "repo-lang-color": "#3572A5",
+  "description": "undefined"
 }
 ```
