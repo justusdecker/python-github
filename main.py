@@ -15,7 +15,20 @@ description
 """
 from requests import get as rqget
 from bs4 import BeautifulSoup
-
+class Finder:
+    """
+    Parse some params to this class like this:
+    #format split 1
+    #format lstrip
+    
+    or
+    
+    #format &attr style <- this will return the attributes of a HTML tag
+    #default undefined
+    <find:id>::user-repo-list
+    <find:class>color-border-muted
+    <itemprop:name>::codeRepo
+    """
 class GitHubAPI:
     
     def get_user_repositorys(user: str) -> dict:
