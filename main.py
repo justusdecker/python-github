@@ -15,20 +15,7 @@ description
 """
 from requests import get as rqget
 from bs4 import BeautifulSoup
-class Finder:
-    """
-    Parse some params to this class like this:
-    #format split 1
-    #format lstrip
     
-    or
-    
-    #format &attr style <- this will return the attributes of a HTML tag
-    #default undefined
-    <find:id>::user-repo-list
-    <find:class>color-border-muted
-    <itemprop:name>::codeRepo
-    """
 class GitHubAPI:
     
     def get_user_repositorys(user: str) -> dict:
@@ -64,7 +51,36 @@ class GitHubAPI:
             ret.append(current)
         return ret
         
-
+    def get_repository(user:str,repo:str):
+        html = rqget(f"https://github.com/{user}/{repo}")
+        bs = BeautifulSoup(html.content,'html.parser')
+        ustar = bs.find(id = "repo-stars-counter-unstar")
+        star = bs.find(id = "repo-stars-counter-star")
+        langs = [] 
+        for lang_element in bs.find_all(attrs={'data-ga-click':"Repository, language stats search click, location:repo overview"}):
+            color = lang_element.find(attrs={'class':'octicon'}).attrs['style'].split(':')[1].replace(';','').lstrip()
+            temp = [p.text for p in lang_element.find_all('span')]
+            temp.append(color)
+            langs.append(temp)
+        """
+        commit count
+        tags
+        license
+        forks
+        name
+        description
+        last commit id
+        last commit text
+        """
+        if star:
+            stars = star.text
+        else:
+            stars = ustar.text
+        ret = {
+            'stars': stars,
+            'langs': langs
+        }
+        print(ret)
 
 def cret(text: str, color: tuple[int,int,int]) -> None:
     color = hex_to_rgb(color)
@@ -84,9 +100,6 @@ def get_repository(user:str,repo:str):
         temp.append(color)
         langs.append(temp)
     """
-    get all langs
-    get all lang colors
-    get lang percentage
     commit count
     tags
     license
@@ -142,4 +155,7 @@ def get_user_repositorys(user: str):
 
 #print(get_user_repositorys('justusdecker'))
 
-get_repository("justusdecker",'pygame-engine')
+gur = GitHubAPI.get_user_repositorys("justusdecker")
+print(gur)
+gr = GitHubAPI.get_repository("justusdecker",'pygame-engine')
+print(gr)
