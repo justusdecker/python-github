@@ -15,7 +15,13 @@ description
 """
 from requests import get as rqget
 from bs4 import BeautifulSoup
-    
+from json import dumps
+def write(file_path: str,data:dict | list) -> None:
+    style = 'style="background-color:#242424;"'
+    p_style = 'style="color:#FFFFFF;"'
+    data = f"<html><body {style}><p {p_style}>{dumps(data,indent = 4).replace('\n','\n<br>')}</p></body></html>"
+    with open(file_path,'w') as file:
+        file.write(data)
 class GitHubAPI:
     
     def get_user_repositorys(user: str) -> dict:
@@ -115,7 +121,16 @@ def get_repository(user:str,repo:str):
         stars = ustar.text
     ret = {
         'stars': stars,
-        'langs': langs
+        'langs': langs,
+        'commit_count': None,
+        'tags': None,
+        'license': None,
+        'forks': None,
+        'name': repo,
+        'user': user,
+        'description': None,
+        'last_commit_id': None,
+        'last_commit_text': None
     }
     print(ret)
     
@@ -158,4 +173,5 @@ def get_user_repositorys(user: str):
 gur = GitHubAPI.get_user_repositorys("justusdecker")
 print(gur)
 gr = GitHubAPI.get_repository("justusdecker",'pygame-engine')
+write("test.html",gur)
 print(gr)
