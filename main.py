@@ -68,6 +68,12 @@ class GitHubAPI:
             temp = [p.text for p in lang_element.find_all('span')]
             temp.append(color)
             langs.append(temp)
+        for element in bs.find_all(attrs={"class":"fgColor-default"}):
+            if 'Commit' in element.text:
+                commits = int(element.text.split(' ')[0])
+                break
+        else:
+            commits = -1
         """
         commit count
         tags
@@ -84,7 +90,8 @@ class GitHubAPI:
             stars = ustar.text
         ret = {
             'stars': stars,
-            'langs': langs
+            'langs': langs,
+            'commits': commits
         }
         print(ret)
 
