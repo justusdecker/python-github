@@ -15,7 +15,18 @@ description
 """
 from requests import get as rqget
 from bs4 import BeautifulSoup
-from json import dumps
+from json import dumps,loads
+def json_walk(js: dict,path:str):
+    actual_js = js
+    for sub in path.split('/'):
+        if not actual_js: return actual_js
+        actual_js = actual_js.get(sub,{})
+    return actual_js
+        
+def write_n(file_path: str,data:str) -> None:
+    
+    with open(file_path,'w') as file:
+        file.write(data)
 def write(file_path: str,data:dict | list) -> None:
     style = 'style="background-color:#242424;"'
     p_style = 'style="color:#FFFFFF;"'
@@ -74,14 +85,22 @@ class GitHubAPI:
                 break
         else:
             commits = -1
+        element = bs.find(attrs={"data-testid":"latest-commit-details"})
+        print('/n')
+        c = 0
+        last_commit_id = ""
+        for a in bs.find_all('script',attrs={"data-target":"react-partial.embeddedData"}):
+            c += 1
+            #print(a.text)
+            e = loads(a.text)
+            val = json_walk(e,'props/initialPayload/refInfo/currentOid')
+            if val: last_commit_id = val[:7]
         """
-        commit count
-        tags
-        license
+        tags in class f6 / sub a tags
+        license in initialPayload
         forks
         name
         description
-        last commit id
         last commit text
         """
         if star:
@@ -91,7 +110,8 @@ class GitHubAPI:
         ret = {
             'stars': stars,
             'langs': langs,
-            'commits': commits
+            'commits': commits,
+            'last_commit_id': last_commit_id
         }
         print(ret)
 
