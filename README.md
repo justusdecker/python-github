@@ -17,6 +17,7 @@
 > |-|-|
 > | Python | 3.13.3 |
 > | OS | Windows 10 | 
+>
 > Other versions may work but are not tested!
 
 ## Methods
