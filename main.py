@@ -16,23 +16,33 @@ description
 from requests import get as rqget
 from bs4 import BeautifulSoup
 from json import dumps,loads
-def json_walk(js: dict,path:str):
-    actual_js = js
-    for sub in path.split('/'):
-        if not actual_js: return actual_js
-        actual_js = actual_js.get(sub,{})
-    return actual_js
+
+def cret(text: str, color: tuple[int,int,int]) -> None:
+    color = hex_to_rgb(color)
+    return f"\033[38;2;{color[0]};{color[1]};{color[2]}m{text}\033[39m"
+
+def hex_to_rgb(text: str) -> tuple[int,int,int]:
+    return int(text[1:3],16),int(text[3:5],16),int(text[5:7],16)
+
+class DataManagement:
+    def json_walk(js: dict,path:str):
+        actual_js = js
+        for sub in path.split('/'):
+            if not actual_js: return actual_js
+            actual_js = actual_js.get(sub,{})
+        return actual_js
+            
+    def write_n(file_path: str,data:str) -> None:
         
-def write_n(file_path: str,data:str) -> None:
-    
-    with open(file_path,'w') as file:
-        file.write(data)
-def write(file_path: str,data:dict | list) -> None:
-    style = 'style="background-color:#242424;"'
-    p_style = 'style="color:#FFFFFF;"'
-    data = f"<html><body {style}><p {p_style}>{dumps(data,indent = 4).replace('\n','\n<br>')}</p></body></html>"
-    with open(file_path,'w') as file:
-        file.write(data)
+        with open(file_path,'w') as file:
+            file.write(data)
+    def write(file_path: str,data:dict | list) -> None:
+        style = 'style="background-color:#242424;"'
+        p_style = 'style="color:#FFFFFF;"'
+        data = f"<html><body {style}><p {p_style}>{dumps(data,indent = 4).replace('\n','\n<br>')}</p></body></html>"
+        with open(file_path,'w') as file:
+            file.write(data)
+            
 class GitHubAPI:
     
     def get_user_repositorys(user: str) -> dict:
@@ -109,7 +119,7 @@ class GitHubAPI:
             c += 1
             #print(a.text)
             e = loads(a.text)
-            val = json_walk(e,'props/initialPayload/refInfo/currentOid')
+            val = DataManagement.json_walk(e,'props/initialPayload/refInfo/currentOid')
             if val: last_commit_id = val[:7]
         """
         tags in class f6 / sub a tags
@@ -130,13 +140,9 @@ class GitHubAPI:
             'last_commit_id': last_commit_id
         }
 
-def cret(text: str, color: tuple[int,int,int]) -> None:
-    color = hex_to_rgb(color)
-    return f"\033[38;2;{color[0]};{color[1]};{color[2]}m{text}\033[39m"
-def hex_to_rgb(text: str) -> tuple[int,int,int]:
-    return int(text[1:3],16),int(text[3:5],16),int(text[5:7],16)
+
 gur = GitHubAPI.get_user_repositorys("justusdecker")
 print(gur)
 #gr = GitHubAPI.get_repository("justusdecker",'pygame-engine')
-write("test.html",gur)
+DataManagement.write("test.html",gur)
 print(gur)
