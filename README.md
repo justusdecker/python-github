@@ -4,11 +4,11 @@
 
 - [x] Get all repos from a user
 - [x] Get data from a specific repo
-- [ ] Get all issues from a specific repo
-- [ ] Get users followers
-- [ ] Get users local time
-- [ ] Get users contribution count
-- [ ] Get users avatar
+- [#1](https://github.com/justusdecker/python-github/issues/1)
+- [#2](https://github.com/justusdecker/python-github/issues/2)
+- [#3](https://github.com/justusdecker/python-github/issues/3)
+- [#4](https://github.com/justusdecker/python-github/issues/4)
+- [#5](https://github.com/justusdecker/python-github/issues/5)
 
 ## Requirements
 
