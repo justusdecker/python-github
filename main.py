@@ -19,7 +19,7 @@ from json import dumps,loads
 
 class DataManagement:
     def json_walk(js: dict,path:str):
-        
+        """ Walks through a path built like this: a/b/c/d. **You can only access dicts!** """
         actual_js = js
         for sub in path.split('/'):
             if not actual_js: return actual_js
