@@ -13,6 +13,7 @@
 ## Requirements
 
 > [!IMPORTANT]
+> Compatibility list
 > | Software or Lib | Value |
 > |-|-|
 > | Python | 3.13.3 |
