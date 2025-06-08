@@ -10,16 +10,34 @@
 - [ ] Get users contribution count
 - [ ] Get users avatar
 
+## Requirements
+
+> [!IMPORTANT]
+> | | |
+> |-|-|
+> | Python | 3.13.3 |
+> 
 ## Methods
 
 > [!WARNING]
 > Some things may be not work currently & some functions might crash!
 
+#### Get all repositorys from a specific user
 
 ```
 GitHubAPI.get_user_repositorys("{username}")
 ```
 
+> [!NOTE]
+> You can only get public repositories!
+
+
+
+
+#### Get a repository
+```
+GitHubAPI.get_repository("{username}",'{repo}')
+```
 
 ## Formats
 ```
