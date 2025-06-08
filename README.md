@@ -34,6 +34,18 @@
 ```
 GitHubAPI.get_user_repositorys("{username}")
 ```
+##### for each repository you get:
+> - repo-name
+> - repo-description
+> - repo language color
+> - all langs in percent & color
+> - stars
+> - all repo commits
+> - last commit id
+##### On top:
+> - user
+> - total stars
+> - total commits
 
 > [!NOTE]
 > You can only get public repositories!
@@ -46,9 +58,9 @@ GitHubAPI.get_user_repositorys("{username}")
 GitHubAPI.get_repository("{username}",'{repo}')
 ```
 
-##### you get
+##### you get:
 > - user
-> - repo
+> - repo-name
 > - stars
 > - all repo commits
 > - last commit id
