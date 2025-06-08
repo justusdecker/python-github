@@ -16,8 +16,11 @@
 > | Software or Lib | Value |
 > |-|-|
 > | Python | 3.13.3 |
+> | requests | 2.32.3 |
+> | bs4 | 0.0.2 |
+> | json | 2.0.9 |
 > | OS | Windows 10 | 
->
+> 
 > Other versions may work but are not tested!
 
 ## Methods
