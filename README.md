@@ -46,6 +46,10 @@ GitHubAPI.get_user_repositorys("{username}")
 GitHubAPI.get_repository("{username}",'{repo}')
 ```
 
+> user
+> repo
+
+
 ## Formats
 ```
 {
