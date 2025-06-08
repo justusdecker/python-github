@@ -43,11 +43,12 @@ class GitHubAPI:
         bs_2 = bs_1.find_all(attrs={"class":"color-border-muted"})
         
         ret = []
-
+        all_stars = 0
+        all_commits = 0
         for i in range(len(bs_2)):
             
             name = bs_2[i].find(attrs={"itemprop":"name codeRepository"})# text
-            
+            print(f"fetching repo:  {name.text.lstrip() if name is not None else 'FAILURE'}")
             description = bs_2[i].find(attrs={"itemprop":"description"})# text
             
             repo_lang_color = bs_2[i].find(attrs={"class":"repo-language-color"})# .attrs['style'].split(' ')[1]
@@ -59,14 +60,30 @@ class GitHubAPI:
             lang = lang.text.lstrip() if lang else "undefined"
             
             # get the license, stars, forks & last updated from repo site
+            
+            # get repo details
+            
+            repo_data = GitHubAPI.get_repository(user,name)
+            all_stars += int(repo_data['stars'])
+            all_commits += int(repo_data['commits'])
             current = {
                 'name': name,
                 'lang': lang,
                 'repo_lang_color': repo_lang_color,
-                'description': description
+                'description': description,
+                'stars': repo_data['stars'],
+                'langs': repo_data['langs'],
+                'commits': repo_data['commits'],
+                'last_commit_id': repo_data['last_commit_id']
             }
             ret.append(current)
-        return ret
+        return {
+            'user': user,
+            'all_stars': all_stars,
+            'all_commits': all_commits,
+            'repo': ret
+        }
+        
         
     def get_repository(user:str,repo:str):
         html = rqget(f"https://github.com/{user}/{repo}")
@@ -86,7 +103,6 @@ class GitHubAPI:
         else:
             commits = -1
         element = bs.find(attrs={"data-testid":"latest-commit-details"})
-        print('/n')
         c = 0
         last_commit_id = ""
         for a in bs.find_all('script',attrs={"data-target":"react-partial.embeddedData"}):
@@ -107,13 +123,14 @@ class GitHubAPI:
             stars = star.text
         else:
             stars = ustar.text
-        ret = {
+        #if stars is None:
+        #    stars = 0
+        return {
             'stars': stars,
             'langs': langs,
             'commits': commits,
             'last_commit_id': last_commit_id
         }
-        print(ret)
 
 def cret(text: str, color: tuple[int,int,int]) -> None:
     color = hex_to_rgb(color)
@@ -199,6 +216,6 @@ def get_user_repositorys(user: str):
 
 gur = GitHubAPI.get_user_repositorys("justusdecker")
 print(gur)
-gr = GitHubAPI.get_repository("justusdecker",'pygame-engine')
+#gr = GitHubAPI.get_repository("justusdecker",'pygame-engine')
 write("test.html",gur)
-print(gr)
+print(gur)
