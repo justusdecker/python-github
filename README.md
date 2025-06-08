@@ -12,8 +12,9 @@
 
 ## Methods
 
-[!WARNING]
-Some things may be not work currently & some functions might crash!
+> [!WARNING]
+> Some things may be not work currently & some functions might crash!
+
 
 ```
 GitHubAPI.get_user_repositorys("{username}")
