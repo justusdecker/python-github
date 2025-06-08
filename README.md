@@ -12,8 +12,11 @@
 
 ## Methods
 
+[!WARNING]
+Some things may be not work currently & some functions might crash!
+
 ```
-GitHubAPI.get_user_repositorys("justusdecker")
+GitHubAPI.get_user_repositorys("{username}")
 ```
 
 
