@@ -46,8 +46,13 @@ GitHubAPI.get_user_repositorys("{username}")
 GitHubAPI.get_repository("{username}",'{repo}')
 ```
 
-> user
-> repo
+> you get
+>
+> - user
+> - repo
+> - stars
+> - all repo commits
+> - last commit id
 
 
 ## Formats
