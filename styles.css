@@ -1,6 +1,18 @@
-h1 {
-    color: #ebebeb
+h1, h2, h3 {
+    color: #ebebeb;
+    text-align: center;
 }
 p {
     color: #dddddd
 }
+body {
+    background-color: #242424;
+}
+.repo-data {
+    margin: auto;
+    width: 50%;
+    border: 3px solid rgb(126, 126, 126);
+    padding: 10px;
+    background-color: rgb(72, 72, 72);
+}
+
